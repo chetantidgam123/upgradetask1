@@ -20,5 +20,8 @@ const logData = ()=>{
     let token = localStorage.getItem('token');
     return token
 }
+const regData = ()=>{
+    console.log('Registered');
+}
 
-export {logData,post_data}
+export {logData,regData,post_data}
