@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { regData, post_data } from '../../util/fetch';
-import { Button, FormControl, FormHelperText, Input, InputLabel, TextField } from '@material-ui/core';
+import { Button, FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core';
 
 const Register = ({ open, setIsLog, handleClose }) => {
   const [formData, setFormData] = useState({
