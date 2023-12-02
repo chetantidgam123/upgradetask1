@@ -1,6 +1,6 @@
 .header{
     background-color: purple;
-    height: 30px;
+    height: 70px;
     padding: 11px;
     display: flex;
     justify-content: space-between;
@@ -43,4 +43,22 @@
 }
 .hometabs .PrivateTabIndicator-colorSecondary-4{
     background-color: blue !important;
+}
+.requiredDiv{
+    display: flex;
+    height: 40px;
+    width: 200px;
+    background-color: #545151;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+.bookappBtn{
+    background-color: #21dd1e !important;
+}
+.cardActions button{
+    width: 45%;
+    margin: auto;
 }

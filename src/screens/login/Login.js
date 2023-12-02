@@ -67,7 +67,7 @@ const Login = ({open,setIsLog,handleClose}) => {
   return (
     <div>
          <form onSubmit={handleSubmit} style={{width:'90%',margin:'auto',textAlign:'center'}}>
-         <FormControl fullWidth margin="normal"  variant="standard" error={!!errors.username}>
+         <FormControl fullWidth margin="normal"  variant="standard" error={!!errors.username && formData.username.trim().length>0 }>
           <InputLabel htmlFor="email">Email *</InputLabel>
           <Input
             id="email"
@@ -76,9 +76,10 @@ const Login = ({open,setIsLog,handleClose}) => {
             value={formData.username}
             onChange={handleChange}
           />
-          <FormHelperText id="my-helper-text">{errors.username}</FormHelperText>
+          {formData.username.trim().length>0 &&<FormHelperText id="my-helper-text">{errors.username}</FormHelperText>}
+          {(formData.username.trim().length===0 && errors.username) && <div className='requiredDiv'><small>{errors.username}</small></div>}
         </FormControl>
-         <FormControl fullWidth margin="normal"  variant="standard" error={!!errors.password}>
+         <FormControl fullWidth margin="normal"  variant="standard" error={!!errors.password && formData.password.trim().length>0 }>
           <InputLabel htmlFor="email">Password *</InputLabel>
           <Input
             id="password"
@@ -87,31 +88,9 @@ const Login = ({open,setIsLog,handleClose}) => {
             value={formData.password}
             onChange={handleChange}
           />
-          <FormHelperText id="my-helper-text">{errors.password}</FormHelperText>
+          {formData.username.trim().length>0 &&<FormHelperText id="my-helper-text">{errors.password}</FormHelperText>}
+          {(formData.username.trim().length===0 && errors.password) && <div className='requiredDiv'><small>{errors.password}</small></div>}
         </FormControl>
-            {/* <TextField
-              label="email*"
-              variant="standard"
-              fullWidth
-              margin="normal"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              error={!!errors.username}
-              helperText={errors.username}
-            /> *
-            <TextField
-              label="Password*"
-              variant="standard"
-              fullWidth
-              margin="normal"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              error={!!errors.password}
-              helperText={errors.password}
-  /> */}
             <Button type="submit" variant="contained" color="primary"  style={{ marginTop: '20px' }}>
               Login
             </Button>
