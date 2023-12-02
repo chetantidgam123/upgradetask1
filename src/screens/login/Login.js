@@ -12,25 +12,6 @@ const Login = ({open,setIsLog,handleClose}) => {
         username: '',
         password: '',
       });
-    const login = (json) => {
-        post_data('/auth/login', json, {})
-            .then((res) => {
-                if (res.data.status) {
-                    localStorage.setItem('token', 'adsdddad');
-                    let logdata = logData();
-                    if (logdata) {
-                        setIsLog(true);
-                    } else {
-                        setIsLog(false);
-                    }
-                } else {
-
-                }
-            }).catch((e) => {
-                console.log(e);
-            })
-    }
-    
       const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -64,6 +45,27 @@ const Login = ({open,setIsLog,handleClose}) => {
          login(formData);
         }
       };
+
+    const login = (json) => {
+        post_data('/auth/login', json, {})
+            .then((res) => {
+                if (res.data.status) {
+                    localStorage.setItem('token', 'adsdddad');
+                    let logdata = logData();
+                    if (logdata) {
+                        setIsLog(true);
+                    } else {
+                        setIsLog(false);
+                    }
+                } else {
+
+                }
+            }).catch((e) => {
+                console.log(e);
+            })
+    }
+    
+    
   return (
     <div>
          <form onSubmit={handleSubmit} style={{width:'90%',margin:'auto',textAlign:'center'}}>
