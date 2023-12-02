@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Header.css';
 import logo from '../../assets/logo.jpeg'
-import { Box, Button, Modal, Tab} from '@material-ui/core';
+import { Box, Button, Modal, Tab } from '@material-ui/core';
 import { logData } from '../../util/fetch';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import Login from '../../screens/login/Login';
@@ -34,10 +34,10 @@ const Header = () => {
             setIsLog(false);
         }
     }
-   
+
 
     const handleChange = (event, newValue) => {
-      setValue(newValue);
+        setValue(newValue);
     };
     useEffect(() => {
 
@@ -65,12 +65,12 @@ const Header = () => {
                     <TabContext value={value}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <TabList className='tabs' onChange={handleChange} aria-label="lab API tabs example">
-                                <Tab label="Login" value="1"  />
+                                <Tab label="Login" value="1" />
                                 <Tab label="Register" value="2" />
                             </TabList>
                         </Box>
-                        <TabPanel value="1"><Login open={open} setIsLog={setIsLog} handleClose={handleClose}/></TabPanel>
-                        <TabPanel value="2"><Register/></TabPanel>
+                        <TabPanel value="1"><Login open={open} setIsLog={setIsLog} handleClose={handleClose} /></TabPanel>
+                        <TabPanel value="2" style={{ maxHeight: '450px', overFlowY: 'auto' }}><Register /></TabPanel>
                     </TabContext>
                 </Box>
 
