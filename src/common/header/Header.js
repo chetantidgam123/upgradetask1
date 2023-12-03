@@ -70,7 +70,7 @@ const Header = () => {
                             </TabList>
                         </Box>
                         <TabPanel value="1"><Login open={open} setIsLog={setIsLog} handleClose={handleClose} /></TabPanel>
-                        <TabPanel value="2" style={{ maxHeight: '450px', overFlowY: 'auto' }}><Register /></TabPanel>
+                        <TabPanel value="2" style={{ maxHeight: '450px',overflowY:'auto' }}><Register setValue={setValue} /></TabPanel>
                     </TabContext>
                 </Box>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Modal, FormControl, FormHelperText, Input, InputLabel, TextField, Select, MenuItem } from '@material-ui/core';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -7,7 +7,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextFields, TextFieldsOutlined } from '@material-ui/icons';
 import { TextareaAutosize } from '@mui/material';
-import { timeSlot } from '../../util/fetch';
+import { get_data } from '../../util/fetch';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -19,7 +19,7 @@ const style = {
     boxShadow: 24,
     p: 0,
 };
-const BookAppointment = ({ open, handleClose }) => {
+const BookAppointment = ({ open, handleClose,doctorData }) => {
     const [value, setValue] = useState(dayjs(new Date()));
     const [formData, setFormData] = useState({
         doctorName: '',
@@ -36,7 +36,8 @@ const BookAppointment = ({ open, handleClose }) => {
     });
     const setDate=(date)=>{
        let date1 = dayjs(date).format('DD/MM/YYYY')
-       setFormData({...formData,date:date1})
+       setFormData({...formData,date:date1});
+       getTimeSlot()
         
     }
   
@@ -66,6 +67,21 @@ const BookAppointment = ({ open, handleClose }) => {
 
         }
     };
+    const [timeSlot,setTimeSlot] = useState()
+
+    const getTimeSlot = ()=>{
+        let date = formData.date.split('/').reverse().join('-')
+        get_data(`/doctors/${doctorData.id}/timeSlots`,{},{date:date})
+        .then((res)=>{
+            setTimeSlot(res.data)
+        }).catch(()=>{
+
+        })
+    }
+
+    useEffect(()=>{
+        getTimeSlot();
+    },[])
     return (
         <div>
             <Modal

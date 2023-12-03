@@ -1,6 +1,7 @@
 import React, {useState } from 'react';
-import { logData, post_data } from '../../util/fetch';
+import { logData, login_post_data, post_data } from '../../util/fetch';
 import { Button, FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core';
+import { errorAlerts, successAlerts } from '../../util/Alert';
 
 const Login = ({open,setIsLog,handleClose}) => {
     const [formData, setFormData] = useState({
@@ -47,18 +48,23 @@ const Login = ({open,setIsLog,handleClose}) => {
       };
 
     const login = (json) => {
-        post_data('/auth/login', json, {})
+      let data = {
+        Username:json.username,
+        Password:json.password
+      }
+      login_post_data('/auth/login', data, {})
             .then((res) => {
                 if (res.data.status) {
-                    localStorage.setItem('token', 'adsdddad');
+                    localStorage.setItem('token', res.data.token);
                     let logdata = logData();
                     if (logdata) {
                         setIsLog(true);
+                        successAlerts(res.data.message);
                     } else {
                         setIsLog(false);
                     }
                 } else {
-
+                  errorAlerts(res.data.message);
                 }
             }).catch((e) => {
                 console.log(e);
