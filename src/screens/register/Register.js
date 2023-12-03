@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { regData, post_data } from '../../util/fetch';
 import { Button, FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core';
+import { errorAlerts, successAlerts } from '../../util/Alert';
 
-const Register = ({ open, setIsLog, handleClose }) => {
+const Register = ({ setValue }) => {
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -20,18 +21,14 @@ const Register = ({ open, setIsLog, handleClose }) => {
   });
 
   const register = (json) => {
-    post_data('/auth/register', json, {})
+    console.log(json);
+    post_data('/users/register', json, {})
       .then((res) => {
         if (res.data.status) {
-          localStorage.setItem('registration', 'registration');
-          let regdata = regData();
-          if (regdata) {
-            console.log('regdata-> ', regdata);
-          } else {
-
-          }
+          setValue('1');
+          successAlerts(res.data.message);
         } else {
-
+          errorAlerts(res.data.message);
         }
       }).catch((e) => {
         console.log(e);
@@ -40,6 +37,11 @@ const Register = ({ open, setIsLog, handleClose }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(name==='mobileNo'){
+      if(value.length>10){
+        return;
+      }
+    }
     setFormData({
       ...formData,
       [name]: value,
@@ -91,7 +93,7 @@ const Register = ({ open, setIsLog, handleClose }) => {
         <FormControl fullWidth margin="normal" variant="standard" error={!!errors.firstname && formData.firstname.trim().length > 0}>
           <InputLabel htmlFor="email">First Name *</InputLabel>
           <Input
-            id="email"
+            id="firstname"
             type="text"
             name="firstname"
             value={formData.firstname}
@@ -140,8 +142,9 @@ const Register = ({ open, setIsLog, handleClose }) => {
           <InputLabel htmlFor="email">Mobile No *</InputLabel>
           <Input
             id="mobileNo"
-            type="mobileNo"
+            type="text"
             name="mobileNo"
+            maxLength="10"
             value={formData.mobileNo}
             onChange={handleChange}
           />

@@ -10,7 +10,7 @@ const Home = () => {
       };
       useEffect(()=>{
 
-      },[])
+      },[value])
     return (
 
         <div>
@@ -18,7 +18,7 @@ const Home = () => {
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList className='hometabs' onChange={handleChange} aria-label="lab API tabs example">
                         <Tab label="DOCTORS" value="1"/>
-                        <Tab label="APPOINTMENT" value="2" />
+                        <Tab label="APPOINTMENT" value="2"/>
                     </TabList>
                 </Box>
                 <TabPanel value="1"><DoctorList/></TabPanel>
