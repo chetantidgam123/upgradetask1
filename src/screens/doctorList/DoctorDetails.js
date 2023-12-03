@@ -20,8 +20,15 @@ const DoctorDetails = ({open1,handleClose1,DoctorDetails}) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
-                    {DoctorDetails}
+                <Box sx={style} className='viewDoctor'>
+                    <p>{DoctorDetails?.doctorName}</p>
+                    <p>Total Experiance : {DoctorDetails?.doctorName}</p>
+                    <p>Speciality :{DoctorDetails?.doctorName}</p>
+                    <p>Date of Birth{DoctorDetails?.doctorName}</p>
+                    <p>City:{DoctorDetails?.doctorName}</p>
+                    <p>Email:{DoctorDetails?.doctorName}</p>
+                    <p>Mobile:{DoctorDetails?.doctorName}</p>
+                    <p>Rating:{DoctorDetails?.doctorName}</p>
                      </Box>
 
             </Modal>

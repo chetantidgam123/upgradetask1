@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { get_data, logData } from '../../util/fetch'
 import { Button, Card, CardActions, CardContent, TextField, Typography } from '@material-ui/core';
-import { Rating, TabContext } from '@material-ui/lab';
+import { Rating } from '@material-ui/lab';
 import { Box, Modal } from '@material-ui/core';
 
 const Appointment = () => {
@@ -9,7 +9,7 @@ const Appointment = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [value, setValue] = useState('1');
+    const [value, setValue] = useState(4);
     const style = {
         position: 'absolute',
         top: '50%',
@@ -21,7 +21,7 @@ const Appointment = () => {
         boxShadow: 24,
         p: 0,
     };
-    const [appitmentList, setAppitmentList] = useState([]);
+    const [appitmentList, setAppitmentList] = useState([{}]);
     const getuserappointment = () => {
         get_data(`/users/${loggdata.email}/appointments`, {}, {})
             .then((res) => {
@@ -40,8 +40,8 @@ const Appointment = () => {
             {/*if login  */}
             {
                 loggdata && <div>
-                    {appitmentList && appitmentList.map((e) =>
-                        <Card>
+                    {appitmentList && appitmentList.map((e,i) =>
+                        <Card key={i}>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>
                                     Dr. Hermione Kelley
@@ -65,8 +65,8 @@ const Appointment = () => {
                             <div className="topSection">
                                 <p>Rate Appointment</p>
                             </div>
-                            {/* <TabContext>
-                            <TextField
+                         <div style={{padding:'10px'}}> 
+                         <TextField
                                 id="outlined-multiline-flexible"
                                 label="Comments"
                                 multiline
@@ -82,7 +82,7 @@ const Appointment = () => {
                                 /></Typography>
                                 <br/>
                             <Button variant="contained" color="primary">Rate Appoitment</Button>
-                        </TabContext> */}
+                         </div>
                         </Box>
                     </Modal>
                 </div>
