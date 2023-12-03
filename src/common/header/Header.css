@@ -79,3 +79,6 @@
     border-right: none !important;
     border-left: none !important;
 }
+.viewDoctor>p{
+    margin-bottom: 8px;
+}
