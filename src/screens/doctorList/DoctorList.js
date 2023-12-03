@@ -1,5 +1,6 @@
 import { Button, Card, CardActions, CardContent, FormControl, MenuItem, Select, Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import { Rating } from '@material-ui/lab';
 import BookAppointment from './BookAppointment';
 import { get_data } from '../../util/fetch';
 import DoctorDetails from './DoctorDetails';
@@ -11,7 +12,7 @@ const DoctorList = () => {
   const handleClose = () => setOpen(false);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  
+
   const handleClose1 = () => setOpen1(false);
   const [open1, setOpen1] = useState(false);
   const handleOpen1 = () => setOpen1(true);
@@ -35,7 +36,7 @@ const DoctorList = () => {
 
   const [doctorList, setDoctorList] = useState([])
   const getDoctorList = () => {
-    get_data('/doctors', {},{speciality:specality})
+    get_data('/doctors',{ speciality: specality })
       .then((res) => {
         if (res.data.length > 0) {
           setDoctorList(res.data)
@@ -44,11 +45,16 @@ const DoctorList = () => {
 
       })
   }
+  
 
   useEffect(() => {
     getDoctorSpeciality();
     getDoctorList()
   }, []);
+  
+  useEffect(() => {
+    getDoctorList()
+  }, [specality]);
 
   return (
     <div>
@@ -61,30 +67,33 @@ const DoctorList = () => {
             value={specality}
             onChange={handleChange}
           >
-            {specialityList.map((e) => <MenuItem value={e}>{e}</MenuItem>)}
+            {specialityList.map((e,i) => <MenuItem key={i} value={e}>{e}</MenuItem>)}
           </Select>
         </FormControl>
       </div>
-      {doctorList.map((e) =>
-        <Card style={{ width: '40%', margin: 'auto' }}>
+      {doctorList.map((e, i) =>
+        <Card key={i} style={{ width: '40%', margin: '10px auto'  }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Doctor Name : Ocean Garner
+              Doctor Name :{e.firstName + " " + e.lastName}
             </Typography>
             <Typography sx={{ fontSize: 14 }} component="div">
-              Speciality:PULMONOLOGIST
+              Speciality:{e.speciality}
             </Typography>
-            <Typography sx={{ mb: 1.5 }}>
-              rating
-            </Typography>
+            <Typography  sx={{ mb: 1.5 }} component="legend">Rating:
+              <Rating
+                name="simple-controlled"
+                value={e.rating}
+                readOnly
+              /></Typography>
           </CardContent>
           <CardActions className='cardActions'>
-            <Button variant="contained" color="primary" onClick={()=>{setDoctorData(e);handleOpen()}} >Book Appoitment</Button>
-            <Button variant="contained" className='bookappBtn'>View Details</Button>
+            <Button variant="contained" color="primary" onClick={() => { setDoctorData(e); handleOpen() }} >Book Appointment</Button>
+            <Button variant="contained" className='bookappBtn' onClick={() => { setDoctorDetails(e); handleOpen1() }}>View Details</Button>
           </CardActions>
         </Card>)}
-      <BookAppointment open={open}handleClose={handleClose} doctorData={doctorData} />
-      <DoctorDetails open1={open1}handleClose={handleClose1} doctorDetails={doctorDetails}/>
+     {(open && doctorData) && <BookAppointment open={open} handleClose={handleClose} doctorData={doctorData} />}
+      {(open1 && doctorDetails) && <DoctorDetails open1={open1} handleClose1={handleClose1} doctorDetails={doctorDetails} />}
     </div>
   )
 }

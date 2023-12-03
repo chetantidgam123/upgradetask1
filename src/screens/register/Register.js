@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { regData, post_data } from '../../util/fetch';
+import { post_data } from '../../util/fetch';
 import { Button, FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core';
-import { errorAlerts, successAlerts } from '../../util/Alert';
 
 const Register = ({ setValue }) => {
   const [formData, setFormData] = useState({
@@ -21,14 +20,20 @@ const Register = ({ setValue }) => {
   });
 
   const register = (json) => {
-    console.log(json);
-    post_data('/users/register', json, {})
+    let data = {
+      "firstName": formData.firstname,
+      "lastName": formData.lastname,
+      "dob": "1903-08-06",
+      "mobile": formData.mobileNo,
+      "password": formData.password,
+      "emailId": formData.email
+    }
+    post_data('/users/register', data, {})
       .then((res) => {
-        if (res.data.status) {
+        if (res.data.salt) {
           setValue('1');
-          successAlerts(res.data.message);
+         alert('Registration Successful')
         } else {
-          errorAlerts(res.data.message);
         }
       }).catch((e) => {
         console.log(e);
@@ -37,8 +42,8 @@ const Register = ({ setValue }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name==='mobileNo'){
-      if(value.length>10){
+    if (name === 'mobileNo') {
+      if (value.length > 10) {
         return;
       }
     }
@@ -56,13 +61,13 @@ const Register = ({ setValue }) => {
     e.preventDefault();
     const newErrors = {};
     if (formData.firstname.trim() === '') {
-      newErrors.firstname = 'Please fill out this feild.';
+      newErrors.firstname = 'Please fill out this field.';
     }
     if (formData.lastname.trim() === '') {
-      newErrors.lastname = 'Please fill out this feild.';
+      newErrors.lastname = 'Please fill out this field.';
     }
     if (formData.email.trim() === '') {
-      newErrors.email = 'Please fill out this feild.';
+      newErrors.email = 'Please fill out this field.';
     } else {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email.trim())) {
@@ -70,10 +75,10 @@ const Register = ({ setValue }) => {
       }
     }
     if (formData.password.trim() === '') {
-      newErrors.password = 'Please fill out this feild.';
+      newErrors.password = 'Please fill out this field.';
     }
     if (formData.mobileNo.trim() === '') {
-      newErrors.mobileNo = 'Please fill out this feild.';
+      newErrors.mobileNo = 'Please fill out this field.';
     } else {
       // const mobileNoRegex = /^\+91[789]\d{9}$/;
       //   if(!mobileNoRegex.test(formData.mobileNo.trim())){
@@ -89,7 +94,7 @@ const Register = ({ setValue }) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} style={{ width: '90%', margin: 'auto', textAlign: 'center'}}>
+      <form onSubmit={handleSubmit} style={{ width: '90%', margin: 'auto', textAlign: 'center' }}>
         <FormControl fullWidth margin="normal" variant="standard" error={!!errors.firstname && formData.firstname.trim().length > 0}>
           <InputLabel htmlFor="email">First Name *</InputLabel>
           <Input

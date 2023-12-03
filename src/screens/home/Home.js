@@ -11,6 +11,7 @@ const Home = () => {
       useEffect(()=>{
 
       },[value])
+    
     return (
 
         <div>
@@ -22,7 +23,7 @@ const Home = () => {
                     </TabList>
                 </Box>
                 <TabPanel value="1"><DoctorList/></TabPanel>
-                <TabPanel value="2"><Appointment/></TabPanel>
+                <TabPanel value="2"><Appointment valuetab={value} /></TabPanel>
             </TabContext>
         </div>
     )

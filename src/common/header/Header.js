@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {useNavigate} from 'react-router-dom'
 import './Header.css';
 import logo from '../../assets/logo.jpeg'
 import { Box, Button, Modal, Tab } from '@material-ui/core';
@@ -6,6 +7,7 @@ import { logData } from '../../util/fetch';
 import { TabContext, TabList, TabPanel } from '@material-ui/lab';
 import Login from '../../screens/login/Login';
 import Register from '../../screens/register/Register';
+import {post_login} from '../../util/fetch'
 const style = {
     position: 'absolute',
     top: '50%',
@@ -13,26 +15,28 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 350,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 0,
 };
 const Header = () => {
+    const logdata = logData()
     const [islog, setIsLog] = useState(false);
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [value, setValue] = useState('1');
-
+    const navigate =useNavigate()
     const logOut = () => {
-        localStorage.removeItem('token');
-        localStorage.clear();
-        let logdata = logData();
-        if (logdata) {
-            setIsLog(true);
-        } else {
-            setIsLog(false);
-        }
+        post_login('/auth/logout',{})
+        .then((res)=>{
+            localStorage.removeItem('token');
+            localStorage.clear();
+                setIsLog(false);
+               window.location.reload();
+
+        }).catch(()=>{
+
+        })
     }
 
 
@@ -40,7 +44,11 @@ const Header = () => {
         setValue(newValue);
     };
     useEffect(() => {
-
+        if(logdata.token){
+            setIsLog(true);
+        }else{
+            setIsLog(false);
+        }
     }, [islog])
     return (
         <div className="header">

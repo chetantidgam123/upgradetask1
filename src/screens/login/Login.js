@@ -1,8 +1,6 @@
 import React, {useState } from 'react';
-import { logData, login_post_data, post_data } from '../../util/fetch';
+import { logData, login_post_data } from '../../util/fetch';
 import { Button, FormControl, FormHelperText, Input, InputLabel } from '@material-ui/core';
-import { errorAlerts, successAlerts } from '../../util/Alert';
-
 const Login = ({open,setIsLog,handleClose}) => {
     const [formData, setFormData] = useState({
         username: '',
@@ -29,7 +27,7 @@ const Login = ({open,setIsLog,handleClose}) => {
         e.preventDefault();
         const newErrors = {};
         if (formData.username.trim() === '') {
-          newErrors.username = 'Please fill out this feild.';
+          newErrors.username = 'Please fill out this field.';
         }else{
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if(!emailRegex.test(formData.username.trim())){
@@ -37,7 +35,7 @@ const Login = ({open,setIsLog,handleClose}) => {
             }
         }
         if (formData.password.trim() === '') {
-          newErrors.password = 'Please fill out this feild.';
+          newErrors.password = 'Please fill out this field.';
         }
     
         if (Object.keys(newErrors).length > 0) {
@@ -48,26 +46,30 @@ const Login = ({open,setIsLog,handleClose}) => {
       };
 
     const login = (json) => {
-      let data = {
-        Username:json.username,
-        Password:json.password
-      }
-      login_post_data('/auth/login', data, {})
+      login_post_data('/auth/login', json)
             .then((res) => {
-                if (res.data.status) {
-                    localStorage.setItem('token', res.data.token);
+                if (res.data.accessToken) {
+                  let email = res.data.emailAddress;
+                  let token = res.data.accessToken;
+                  let firstName = res.data.firstName;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('emailId', email);
+                    localStorage.setItem('firstName', firstName);
                     let logdata = logData();
                     if (logdata) {
                         setIsLog(true);
-                        successAlerts(res.data.message);
+                        handleClose()
+                      alert('Login Successful');
                     } else {
+                        
                         setIsLog(false);
+                      }
+                    } else {
+                      
                     }
-                } else {
-                  errorAlerts(res.data.message);
-                }
-            }).catch((e) => {
-                console.log(e);
+                  }).catch((e) => {
+                    alert(e.response.data.message);
+                // console.log(e);
             })
     }
     
@@ -96,8 +98,8 @@ const Login = ({open,setIsLog,handleClose}) => {
             value={formData.password}
             onChange={handleChange}
           />
-          {formData.username.trim().length>0 &&<FormHelperText id="my-helper-text">{errors.password}</FormHelperText>}
-          {(formData.username.trim().length===0 && errors.password) && <div className='requiredDiv'><small>{errors.password}</small></div>}
+          {formData.password.trim().length>0 &&<FormHelperText id="my-helper-text">{errors.password}</FormHelperText>}
+          {(formData.password.trim().length===0 && errors.password) && <div className='requiredDiv'><small>{errors.password}</small></div>}
         </FormControl>
             <Button type="submit" variant="contained" color="primary"  style={{ marginTop: '20px' }}>
               Login
